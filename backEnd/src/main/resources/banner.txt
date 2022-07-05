@@ -1,0 +1,10 @@
+ _____ ______   ___   _____
+|  ___||  _  \ / _ \ /  ___|
+| |__  | | | |/ /_\ \\ `--.
+|  __| | | | ||  _  | `--. \
+| |___ | |/ / | | | |/\__/ /
+\____/ |___/  \_| |_/\____/
+A Test project for new candidates.
+::Spring-Boot::${AnsiColor.GREEN} ${spring-boot.version}${AnsiColor.DEFAULT}
+::Angular::${AnsiColor.GREEN} 13${AnsiColor.DEFAULT}
+::Authors/Contact::${AnsiColor.MAGENTA} Dimitris Terzidis (dimitris.terzidis@eurodyn.com),Konstantinos Souvatzopoulos (konstantinos.souvatzopoulos@eurodyn.com),Dimitris Papadeas (dimitris.papadeas@eurodyn.com)${AnsiColor.DEFAULT}

@@ -1,0 +1,167 @@
+<div class="mainContent">
+  <form [formGroup]="form" (ngSubmit)="formSubmit(form)">
+    <div class="col-sm-1 col-md-1 col-lg-1">
+      <button mat-icon-button title="Save" type="submit" *ngIf="!paramId">
+        <mat-icon>save</mat-icon>
+      </button>
+    </div>
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Account
+          </mat-panel-title>
+          <mat-panel-description>
+            Information regarding this Account
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="row form-group">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <label for="description">Account Name</label>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" type="text" id="description" placeholder="Description"
+                   formControlName="description">
+            <div *ngIf="form.get('description').errors?.required && form.get('description').dirty" class="text-danger">
+              Field is required
+            </div>
+            <div *ngIf="form.get('description').errors?.minlength && form.get('description').dirty" class="text-danger">
+              The minimum length of field is 3 characters
+            </div>
+          </div>
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <label for="calculatedBalance">Balance</label>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" type="text" id="calculatedBalance" placeholder="Balance"
+                   formControlName="calculatedBalance">
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel expanded="true" *ngIf="paramId">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Users
+          </mat-panel-title>
+          <mat-panel-description>
+            List of Users using Account
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="row form-group">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <button mat-icon-button title="Add USer" type="button" (click)="addUser()" *ngIf="paramId">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          </div>
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            <table id="userList" mat-table class="mat-elevation-z8" [dataSource]="userList">
+
+              <ng-container matColumnDef="fName">
+                <th mat-header-cell *matHeaderCellDef>First Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.fistName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="sName">
+                <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.surName}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsUser; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsUser;"></tr>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel expanded="true" *ngIf="paramId">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Transactions
+          </mat-panel-title>
+          <mat-panel-description>
+            List of Transactions in Account
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+
+        <div class="row form-group">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <button mat-icon-button title="Add Transaction" (click)="addTransaction()" type="button" *ngIf="paramId">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          </div>
+          <div class="col-sm-10 col-md-10 col-lg-10">
+            <table mat-table class="mat-elevation-z8" [dataSource]="transactionList" matSort
+                   (matSortChange)="sortData($event)" matSortActive="date" matSortDirection="asc">
+
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header=""> Description</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-button (click)="editTransaction(element.id,$event)" title="edit">
+                    {{element.description}}
+                  </button>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header=""> Type</th>
+                <td mat-cell *matCellDef="let element" [ngSwitch]="element.type">
+                  <label *ngSwitchCase="'INCOME'">
+                    <mat-icon>arrow_downward</mat-icon>
+                    Incoming
+                  </label>
+                  <label *ngSwitchCase="'EXPENCE'">
+                    <mat-icon>arrow_upward</mat-icon>
+                    Outgoing
+                  </label>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header=""> Date</th>
+                <td mat-cell *matCellDef="let element"> {{element.date | date:'MMM d, y'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="userName">
+                <th mat-header-cell *matHeaderCellDef> User</th>
+                <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header=""> Amount</th>
+                <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let element">
+                  <button type="button" mat-icon-button (click)="deleteTransaction(element.id,$event)" title="delete">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <mat-paginator
+                  [pageSize]="dataPageSize"
+                  [length]="dataLength"
+                  [showFirstLastButtons]="true"
+                  [pageSizeOptions]="pageSizeOptions"
+                  (page)="getServerData($event)">
+                </mat-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>

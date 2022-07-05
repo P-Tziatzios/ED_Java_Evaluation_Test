@@ -1,0 +1,92 @@
+<div class="mainContent">
+  <form [formGroup]="form" (ngSubmit)="formSubmit(form)">
+
+    <div class="row form-group">
+      <div class="col-sm-1 col-md-1 col-lg-1">
+        <button mat-icon-button title="Save" type="submit">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      <div class="col-sm-1 col-md-1 col-lg-1">
+        <button mat-icon-button title="Cacnel" routerLink="/user">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="titleInput">Username</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="titleInput" placeholder="Username" formControlName="userName">
+        <div *ngIf="form.get('userName').errors?.required && form.get('userName').dirty" class="text-danger">
+          Field is required
+        </div>
+        <div *ngIf="form.get('userName').errors?.minlength && form.get('userName').dirty" class="text-danger">
+          The minimum length of field is 3 characters
+        </div>
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="fName">Firstname</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="fName" placeholder="Enter Firstname" formControlName="fistName">
+        <div *ngIf="form.get('fistName').errors?.required && form.get('fistName').dirty" class="text-danger">
+          Field is required
+        </div>
+        <div *ngIf="form.get('fistName').errors?.minlength && form.get('fistName').dirty" class="text-danger">
+          The minimum length of field is 3 characters
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row form-group">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="sName">Lastname</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="sName" placeholder="Enter Lastname" formControlName="surName">
+        <div *ngIf="form.get('surName').invalid && form.get('surName').dirty" class="text-danger">
+          Field is required
+        </div>
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="comments">Comment</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="comments" formControlName="comments">
+      </div>
+    </div>
+
+    <div class="row form-group" *ngIf="isDraft">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="password">Password</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="password" class="form-control" id="password" placeholder="Password" formControlName="pass">
+        <div *ngIf="form.get('pass').errors?.required && form.get('pass').dirty" class="text-danger">
+          Field is required
+        </div>
+        <div *ngIf="form.get('pass').errors?.minlength && form.get('pass').dirty" class="text-danger">
+          The minimum length of field is 3 characters
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+      </div>
+    </div>
+
+
+    <div class="row form-group">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="superAdmin">Super Admin</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="checkbox" class="form-control" id="superAdmin" formControlName="superAdmin">
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+      </div>
+    </div>
+  </form>
+</div>

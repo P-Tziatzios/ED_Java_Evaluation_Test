@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <h1>
+    {{title}}
+  </h1>
+  <button *ngIf="isloggedIn()" mat-button routerLink="/home">Home</button>
+  <button *ngIf="isloggedIn()" mat-button [matMenuTriggerFor]="menuAdmin">Administration</button>
+  <button mat-button routerLink="/about">About</button>
+
+  <button mat-button [matMenuTriggerFor]="menuUser" *ngIf="isloggedIn()">
+    <mat-icon>supervisor_account</mat-icon>
+    {{username}}
+  </button>
+</mat-toolbar>
+
+<mat-menu #menuAdmin="matMenu">
+  <button mat-menu-item routerLink="/user"> List of Users</button>
+  <button mat-menu-item routerLink="/newAccount"> Create new Account</button>
+</mat-menu>
+<mat-menu #menuUser="matMenu">
+  <button mat-button (click)="logout()">Logout</button>
+</mat-menu>
+
+<router-outlet></router-outlet>

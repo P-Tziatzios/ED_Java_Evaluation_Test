@@ -1,0 +1,65 @@
+<div class="mainContent">
+  <form [formGroup]="form" (ngSubmit)="formSubmit(form)">
+
+    <div class="row form-group">
+      <div class="col-sm-1 col-md-1 col-lg-1">
+        <button mat-icon-button title="Save" type="submit">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      <div class="col-sm-1 col-md-1 col-lg-1">
+        <button mat-icon-button title="Cacnel" routerLink="/home">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="description">Description</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="description" placeholder="Description"
+               formControlName="description">
+        <div *ngIf="form.get('description').errors?.required && form.get('description').dirty" class="text-danger">
+          Field is required
+        </div>
+        <div *ngIf="form.get('description').errors?.minlength && form.get('description').dirty" class="text-danger">
+          The minimum length of field is 3 characters
+        </div>
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label class="form-control-label">Type</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <select class="form-control" formControlName="type">
+          <option [ngValue]="null">Select</option>
+          <option *ngFor="let lang of types" [ngValue]="lang">
+            {{lang}}
+          </option>
+        </select>
+        <div *ngIf="form.get('type').invalid && form.get('type').dirty" class="text-danger">
+          Field is required
+        </div>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="amount">Amount</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="number" class="form-control" id="amount" placeholder="Amount" formControlName="amount">
+        <div *ngIf="form.get('amount').invalid && form.get('amount').dirty" class="text-danger">
+          Field is required
+        </div>
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="accountName">Account</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="accountName" formControlName="accountName">
+      </div>
+    </div>
+  </form>
+</div>

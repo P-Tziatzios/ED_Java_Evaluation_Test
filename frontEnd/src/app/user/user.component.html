@@ -1,0 +1,26 @@
+<div class="mainContent">
+  <button mat-icon-button (click)="createUser()" type="button" title="Add User">
+    <mat-icon>add_circle_outline</mat-icon>
+  </button>
+
+  <mat-card *ngFor="let user of users" style="margin-top:10px;">
+    <mat-card-header>
+      <mat-card-title>Username: {{user.userName}}</mat-card-title>
+      <mat-card-subtitle>
+        <label>Firstname: {{user.fistName}}</label>
+        <label>Lastname: {{user.surName}}</label>
+        <label *ngIf="user.superAdmin">Role: Admin</label>
+        <label *ngIf="!user.superAdmin">Role: User</label>
+        <label>Comments: {{user.comments}}</label>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-icon-button (click)="editUser(user.id)" type="button">
+        <mat-icon>create</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteUser(user.id)" type="button">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
