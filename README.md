@@ -15,12 +15,10 @@ the exercises that follow. Each exercise awards a different amount of points tot
 The use of any IDE and/or editor to edit the source code is allowed. It is totally acceptable, for the candidate to get
 help and information he/she needs from the internet. However, it is not acceptable to ask for another person's help.
 
-Nevertheless, the candidate is encouraged to contact the assessor for any questions he/she might have, be it he/she
-needs any additional information, or he/she requires some help for completing the installation and/or an exercise. If
-the candidate has difficulties for example to complete the installation, he/she could ask for help from the assessor in
-order to be able to go on with the exercises and gain points.
+Nevertheless, the candidate is encouraged to contact the assessor for any questions or problems during installation might occur 
+and also in case an exercise description is not clear enough.
 
-The assessor should provide contact information to the candidate.
+The assessor will provide contact information to the candidate.
 
 The candidate has to locate the files needed to complete the exercises. The exercises cover both front-end and back-end
 implementation tasks.
@@ -124,9 +122,9 @@ for the tests remain. To complete this exercise the candidate needs to complete 
 At the moment Users are unable to register their Age. For this exercise add an age Attribute to the users. To complete
 this task the candidate should implement all the necessary changes in the frontend, the backend and the database.
 
-### Extra Credit Exercise
+### Extra Credit Exercise (Optional)
 
-This Exercise is optional and is designed to give credits for design and logical thinking. To score points the candidate
+This Exercise is designed to give credits for design and logical thinking. To score points the candidate
 should implement an export functionality for the Transactions listed in an Account. The candidate is free to use any
 libraries and can implement it in any way. The only conditions in place are the following:
 
