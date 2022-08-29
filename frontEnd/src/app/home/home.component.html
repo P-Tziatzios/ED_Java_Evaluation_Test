@@ -56,8 +56,8 @@
           </ng-container>
 
           <ng-container matColumnDef="account">
-            <th mat-header-cell *matHeaderCellDef> Acount</th>
-            <td mat-cell *matCellDef="let element"> {{element.accountName}} </td>
+            <th mat-header-cell *matHeaderCellDef class="account"> Acount</th>
+            <td mat-cell *matCellDef="let element" class="account"> {{element.accountName}} </td>
           </ng-container>
 
           <ng-container matColumnDef="amount">
@@ -112,6 +112,15 @@
                   <td mat-cell *matCellDef="let element"> {{element.calculatedBalance}} </td>
                 </ng-container>
 
+                <ng-container matColumnDef="export">
+                  <th mat-header-cell *matHeaderCellDef>Export</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-button (click)="exportTransactionToCsvByAccount(element)">
+                      <mat-icon>cloud_download</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsAccount; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsAccount;"></tr>
               </table>
@@ -139,6 +148,15 @@
                     <td mat-cell *matCellDef="let element" [hidden]="!isAdmin">
                       <button mat-icon-button title="View" (click)="viewAccount(element.id,$event)">
                         <mat-icon>open_in_new</mat-icon>
+                      </button>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="export">
+                    <th mat-header-cell *matHeaderCellDef>Export</th>
+                    <td mat-cell *matCellDef="let element">
+                      <button mat-button (click)="exportTransactionToCsvByAccount(element)">
+                        <mat-icon>cloud_download</mat-icon>
                       </button>
                     </td>
                   </ng-container>

@@ -15,7 +15,7 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['description', 'type', 'date', 'account', 'amount'];
-  displayedColumnsAccount: string[] = ['description', 'calculatedBalance'];
+  displayedColumnsAccount: string[] = ['description', 'calculatedBalance', 'export'];
 
   @Input() dataLength: number;
   @Input() dataPageIndex: number = 0; // Which index is the current for the data paginator
@@ -144,5 +144,16 @@ export class HomeComponent implements OnInit {
   editTransaction(id, $event: MouseEvent) {
     $event.stopPropagation();
     this.router.navigate(['/editTransaction', id]);
+  }
+
+  exportTransactionToCsvByAccount(account: Account) {
+    const filename = account.description;
+    this.accountService.exportTransactionsToCsvByAccountId(account.id).subscribe(file => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(file);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+    });
   }
 }

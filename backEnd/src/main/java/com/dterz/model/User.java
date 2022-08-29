@@ -40,6 +40,9 @@ public class User {
     @Column(name = "super_admin")
     private boolean superAdmin;
 
+    @Column(name = "age")
+    private Integer age;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions = new java.util.ArrayList<>();
 

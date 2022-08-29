@@ -12,6 +12,7 @@ export interface User {
   surName: string;
   comments: string;
   superAdmin: boolean;
+  age: number;
   permissions: any[];
 }
 

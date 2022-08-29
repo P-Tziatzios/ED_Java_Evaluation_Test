@@ -1,8 +1,11 @@
 package com.dterz.controllers;
 
 import com.dterz.dtos.AccountDTO;
+import com.dterz.model.Transaction;
 import com.dterz.service.AccountService;
 
+import com.dterz.utils.CsvFileGenerator;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/account")
 @CrossOrigin
@@ -23,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class AccountController {
 
     private final AccountService accountService;
+    private final CsvFileGenerator csvFileGenerator;
 
     /**
      * Gets an Acount by its id
@@ -68,4 +75,23 @@ public class AccountController {
     public ResponseEntity<AccountDTO> update(@RequestBody AccountDTO accountDTO) {
         return ResponseEntity.ok(accountService.updateAccount(accountDTO));
     }
+
+  /**
+   * Gets all transaction by account in csv file.
+   * The parameter is optional and if provided the accounts get filtered by User
+   *
+   * @param accountId the account id
+   */
+  @GetMapping("/transactions-in-csv/{accountId}")
+  public void getTransactionsToCsv(HttpServletResponse response,
+      @PathVariable(name = "accountId") long accountId) {
+    List<Transaction> transactionList = accountService.getTransactionsByAccountId(accountId);
+    try {
+      response.setContentType("text/csv");
+      response.addHeader("Content-Disposition", "attachment; filename=transactions.csv");
+      csvFileGenerator.writeTransactionsToCsv(transactionList, response.getWriter());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

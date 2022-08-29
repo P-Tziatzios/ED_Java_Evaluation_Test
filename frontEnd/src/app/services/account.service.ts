@@ -7,7 +7,7 @@ import {environment} from "../../environments/environment";
 export interface Account {
   id: string;
   calculatedBalance: number;
-  description: String;
+  description: string;
   lastTransaction: Date;
   users: [User];
 }
@@ -45,5 +45,11 @@ export class AccountService {
 
   updateAccount(account: Account): Observable<Account> {
     return this.httpClient.put<Account>(`${environment.apiUrl + '/account'}`, account);
+  }
+
+  exportTransactionsToCsvByAccountId(accountId: string) {
+    return this.httpClient.get(`${environment.apiUrl + '/account/transactions-in-csv'}/${accountId}`, {
+      responseType : 'blob'
+    });
   }
 }

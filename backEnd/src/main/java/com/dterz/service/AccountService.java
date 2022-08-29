@@ -64,40 +64,30 @@ public class AccountService {
     /**
      * Calculates the current balance of an Account based on it transactions
      *
-     * @param Logarsmos    the Account we need the Balance for
+     * @param account    the Account we need the Balance for
      * @param initialValue initial balance
      */
-    private void Calcbalance2(Object Logarsmos, Double initialValue) {
-        final long start = System.currentTimeMillis();
-        Double zero = BigDecimal.ZERO.doubleValue();
-        List<Long> transaction = transactionsRepository.findAllIds();
+    private void Calcbalance2(Object account, Double initialValue) {
+      final long start = System.currentTimeMillis();
+      double balance = Objects.isNull(initialValue) ? 0 : initialValue;
+      List<Long> transactions = transactionsRepository.findAllIds();
+      AccountDTO accountDTO = (AccountDTO) account;
 
-        int next = 0;
-        for (next = 0; next < transaction.size(); next++) {
-            transactionsRepository.findById(transaction.get(next)).get();
-            if (transactionsRepository.findById(transaction.get(next)).get().getAccount().getId() == ((AccountDTO) Logarsmos).getId())
-                accountTransactions.add(transactionsRepository.findById(transaction.get(next)).get());
+      for (Long transactId : transactions) {
+        Optional<Transaction> transaction =
+            transactionsRepository.findById(transactId);
+
+        if (transaction.isPresent() &&
+            transaction.get().getAccount().getId() == accountDTO.getId()) {
+          balance = calculateNetBalanace(balance, transaction.get().getType(),
+              transaction.get().getAmount().doubleValue());
         }
-        for (int y = 0; y < accountTransactions.size(); y++) {
-            if (TransanctionType.INCOME.equals(accountTransactions.get(y).getType())) {
-                zero = zero + accountTransactions.get(y).getAmount().doubleValue();
-            }
-        }
-        for (int x = 0; x < accountTransactions.size(); x++)
-            if (TransanctionType.EXPENCE.equals(accountTransactions.get(x).getType())) {
-                zero = zero - accountTransactions.get(x).getAmount().doubleValue();
-            }
-        accountTransactions.sort(new Comparator<Transaction>() {
+      }
 
-            @Override
-            public int compare(Transaction o1, Transaction o2) {
-                return o1.getDate().compareTo(o1.getDate());
-            }
-
-        });
-        ((AccountDTO) Logarsmos).setCalculatedBalance(BigDecimal.valueOf(zero));
-        accountTransactions.clear();
-        log.info("calcBalance took {} ms for Account {}", (System.currentTimeMillis() - start), ((AccountDTO) Logarsmos).getId());
+      accountDTO.setCalculatedBalance(BigDecimal.valueOf(balance));
+      accountTransactions.clear();
+      log.info("calcBalance took {} ms for Account {}", (System.currentTimeMillis() - start),
+          accountDTO.getId());
     }
 
     /**
@@ -140,5 +130,33 @@ public class AccountService {
         }
         accountRepository.save(account);
         return mapper.entityToDto(account);
+    }
+
+  /**
+   * Retrieves all transactions based on account id
+   *
+   * @param accountId the accountId
+   * @return List<Transaction>
+   */
+  public List<Transaction> getTransactionsByAccountId(long accountId) {
+    Optional<Account> accountOpt = accountRepository.findById(accountId);
+    Account account;
+    List<Transaction> transactions = new ArrayList<>();
+    if (accountOpt.isPresent()) {
+      account = accountOpt.get();
+      transactions = account.getTransactions();
+    }
+    return transactions;
+  }
+
+    private double calculateNetBalanace(double initialBudget, TransanctionType transanctionType,
+        double amount) {
+
+      if (TransanctionType.INCOME.equals(transanctionType)) {
+        initialBudget =  initialBudget + amount;
+      } else if (TransanctionType.EXPENCE.equals(transanctionType)) {
+        initialBudget =  initialBudget - amount;
+      }
+      return initialBudget;
     }
 }

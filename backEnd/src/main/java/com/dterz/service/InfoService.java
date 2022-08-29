@@ -2,6 +2,7 @@ package com.dterz.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.transaction.Transactional;
 
@@ -28,7 +29,9 @@ public class InfoService {
     public Map<String, Object> getVersion(String component) {
         Map<String, Object> response = new HashMap<>();
         Info info = infoRepository.findByComponent(component);
-        response.put(component, info.getVersion());
+        if (Objects.nonNull(info)) {
+          response.put(component, info.getVersion());
+        }
         return response;
     }
 }

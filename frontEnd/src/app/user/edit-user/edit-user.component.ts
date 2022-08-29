@@ -41,6 +41,7 @@ export class EditUserComponent implements OnInit {
       comments: new FormControl(null),
       salt: new FormControl(null),
       pass: new FormControl(null, Validators.required),
+      age: new FormControl(null),
       superAdmin: new FormControl(null),
       permissions: new FormArray([])
     });

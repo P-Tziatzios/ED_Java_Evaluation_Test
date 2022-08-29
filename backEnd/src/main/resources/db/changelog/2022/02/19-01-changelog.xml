@@ -944,13 +944,12 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="1645272976866-16" author="dimitris (generated)">
-        <sql>
-            INSERT INTO INFO (ID, COMPONENT, VERSION)
-            VALUES (1, 'backend', '1.1.0');
-            INSERT INTO INFO (ID, COMPONENT, VERSION)
-            VALUES (2, 'frontend', '1.2.1');
-        </sql>
-    </changeSet>
+  <changeSet id="1645272976866-16" author="Panagiotis Tziatzios (generated)">
+    <addColumn tableName="client_user">
+      <column name="age" type="BIGINT">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
 
 </databaseChangeLog>
