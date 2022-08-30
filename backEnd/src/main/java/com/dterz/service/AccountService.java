@@ -30,8 +30,6 @@ public class AccountService {
     private final UserRepository userRepository;
     private final TransactionsRepository transactionsRepository;
 
-    ArrayList<Transaction> accountTransactions = new ArrayList<Transaction>();
-
     /**
      * Gets all Accounts currently in the System.
      * The parameter is optional and if provided the accounts get filtered by User
@@ -52,7 +50,7 @@ public class AccountService {
         Map<String, Object> response = new HashMap<>();
         List<AccountDTO> accountDTOS = mapper.entityListToDTOList(acountList);
         for (AccountDTO accountDTO : accountDTOS) {
-            Calcbalance2(accountDTO, 0d);
+          calculateBalance(accountDTO, 0d);
         }
         response.put("accounts", accountDTOS);
         response.put("currentPage", page.getNumber());
@@ -64,10 +62,10 @@ public class AccountService {
     /**
      * Calculates the current balance of an Account based on it transactions
      *
-     * @param account    the Account we need the Balance for
+     * @param account the Account we need the Balance for
      * @param initialValue initial balance
      */
-    private void Calcbalance2(Object account, Double initialValue) {
+    private void calculateBalance(Object account, Double initialValue) {
       final long start = System.currentTimeMillis();
       double balance = Objects.isNull(initialValue) ? 0 : initialValue;
       List<Long> transactions = transactionsRepository.findAllIds();
@@ -79,13 +77,12 @@ public class AccountService {
 
         if (transaction.isPresent() &&
             transaction.get().getAccount().getId() == accountDTO.getId()) {
-          balance = calculateNetBalanace(balance, transaction.get().getType(),
+          balance = calculateNetBalance(balance, transaction.get().getType(),
               transaction.get().getAmount().doubleValue());
         }
       }
 
       accountDTO.setCalculatedBalance(BigDecimal.valueOf(balance));
-      accountTransactions.clear();
       log.info("calcBalance took {} ms for Account {}", (System.currentTimeMillis() - start),
           accountDTO.getId());
     }
@@ -99,7 +96,7 @@ public class AccountService {
     public AccountDTO getAccountById(long accountId) {
         Account account = accountRepository.findById(accountId).orElse(null);
         AccountDTO accountDTO = mapper.entityToDto(account);
-        Calcbalance2(accountDTO, null);
+        calculateBalance(accountDTO, null);
         return accountDTO;
     }
 
@@ -149,14 +146,22 @@ public class AccountService {
     return transactions;
   }
 
-    private double calculateNetBalanace(double initialBudget, TransanctionType transanctionType,
-        double amount) {
+  /**
+   * Calculates the remaining budget based on the transaction type and the initial budget
+   *
+   * @param initialBudget the starting budget
+   * @param transanctionType the transaction type
+   * @param amount the amount to be appended or deducted
+   * @return the new calculated balance
+   */
+  private double calculateNetBalance(double initialBudget, TransanctionType transanctionType,
+      double amount) {
 
-      if (TransanctionType.INCOME.equals(transanctionType)) {
-        initialBudget =  initialBudget + amount;
-      } else if (TransanctionType.EXPENCE.equals(transanctionType)) {
-        initialBudget =  initialBudget - amount;
-      }
-      return initialBudget;
+    if (TransanctionType.INCOME.equals(transanctionType)) {
+      initialBudget =  initialBudget + amount;
+    } else if (TransanctionType.EXPENCE.equals(transanctionType)) {
+      initialBudget =  initialBudget - amount;
     }
+    return initialBudget;
+  }
 }

@@ -16,6 +16,7 @@ public class CsvFileGenerator {
 
     try {
       CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
+      printer.printRecord("TransactionId", "Amount", "Username", "Type");
       for (Transaction transaction : transactions) {
         printer.printRecord(transaction.getId(), transaction.getAmount(),
             transaction.getUser().getUserName(), transaction.getType());
